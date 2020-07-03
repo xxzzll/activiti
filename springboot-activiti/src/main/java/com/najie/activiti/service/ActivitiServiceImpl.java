@@ -44,15 +44,16 @@ public class ActivitiServiceImpl implements ActivitiService{
     @Autowired
     private  RepositoryService repositoryService;
 
+    // 先注释掉以下代码，防止每次容器启动时就创建就部署并创建一个流程定义
     //部署流程定义
-    @PostConstruct
-    public ProcessDefinition deployProcessDefinition() throws IOException {
-        //String resource = ResourceLoader.CLASSPATH_URL_PREFIX+PROCESS_FILE;
-        Deployment deployment = repositoryService.createDeployment().addClasspathResource(PROCESS_FILE).name("离职申请流程").deploy();
-        logger.info("deployment["+deployment+"]");
-        logger.info("Process [" + deployment.getName() + "] deployed successful");
-        return repositoryService.createProcessDefinitionQuery().deploymentId(deployment.getId()).singleResult();
-    }
+//    @PostConstruct
+//    public ProcessDefinition deployProcessDefinition() throws IOException {
+//        //String resource = ResourceLoader.CLASSPATH_URL_PREFIX+PROCESS_FILE;
+//        Deployment deployment = repositoryService.createDeployment().addClasspathResource(PROCESS_FILE).name("离职申请流程").deploy();
+//        logger.info("deployment["+deployment+"]");
+//        logger.info("Process [" + deployment.getName() + "] deployed successful");
+//        return repositoryService.createProcessDefinitionQuery().deploymentId(deployment.getId()).singleResult();
+//    }
 
 
     /**
@@ -86,7 +87,7 @@ public class ActivitiServiceImpl implements ActivitiService{
      * @return
      */
     public void cancelProcessInstance(String processInstanceId){
-        
+
         runtimeService.deleteProcessInstance(processInstanceId,null);
         //runtimeService.suspendProcessInstanceById(processInstanceId);
         logger.info("流程实例["+processInstanceId+"]已经删除");
@@ -112,14 +113,14 @@ public class ActivitiServiceImpl implements ActivitiService{
         map.put("processDefinitionVersion",processDefinitionVersion);
         return map;
     }
-    
+
     /**
      * 查询执行流程的信息
      * @return
      */
     public List<Execution> getExecutionInfo(){
     	return runtimeService.createExecutionQuery().list();
-    	
+
     }
 
     /**
@@ -234,10 +235,10 @@ public class ActivitiServiceImpl implements ActivitiService{
             result.put("processInstanceId",task.getProcessInstanceId());
             result.put("suspended",task.isSuspended());
         }
-        
+
         return result;
     }
-    
+
     /**
      * 根据任务名称查询任务信息
      * @param taskName
@@ -427,7 +428,7 @@ public class ActivitiServiceImpl implements ActivitiService{
         }
         return list;
     }
-    
+
     /**
      * @desc 领取任务（针对岗位）
      * @param taskId

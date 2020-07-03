@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
  */
 public class ProcessEventListener implements ActivitiEventListener {
     private Logger logger = LoggerFactory.getLogger(ProcessEventListener.class);
+
     @Override
     public void onEvent(ActivitiEvent event) {
         ActivitiEventType eventType = event.getType();
